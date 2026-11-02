@@ -1,0 +1,6 @@
+# Copy this file to print-medium-pdf.properties and set your local values.
+# Windows backslashes are literal. Relative paths use the project directory.
+pdf.directory=.
+# Use the printer name displayed by Windows, or a network printer path.
+printer.name=
+sumatra.path=C:\Program Files (x86)\SumatraPDF\SumatraPDF.exe

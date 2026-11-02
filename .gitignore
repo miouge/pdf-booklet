@@ -1,0 +1,41 @@
+# Local configuration and secrets.
+/print-medium-pdf.properties
+.env
+.env.*
+*.pem
+*.key
+
+# Python environments and caches.
+/.venv/
+/venv/
+__pycache__/
+*.py[cod]
+
+# Keep only the command shims used by the Windows launcher.
+/.tools/*
+!/.tools/bin/
+/.tools/bin/*
+!/.tools/bin/pdfbook2.cmd
+!/.tools/bin/pdfjam.cmd
+!/.tools/bin/kpsewhich.cmd
+!/.tools/bin/pdflatex.cmd
+
+# Local documents and generated output.
+*.pdf
+*.log
+*.aux
+*.out
+*.synctex.gz
+.crop-tmp*
+
+# Legacy entry points and upstream manuals kept locally.
+/start_env.cmd
+/start_env.ps1
+/pdfbook2/README
+/pdfbook2/pdfbook2.1
+
+# Editors and operating system files.
+/.idea/
+/.vscode/
+.DS_Store
+Thumbs.db
