@@ -44,7 +44,7 @@ call .venv\Scripts\activate.bat
 :: Check if parameter is provided
 if "%~1"=="" (
     echo Erreur: Veuillez fournir le chemin du fichier PDF
-    echo Usage: create-booklet.bat "chemin\vers\fichier.pdf"
+    echo Usage: create-booklet.bat "chemin\vers\fichier.pdf" [A3^|A4]
     exit /b 1
 )
 
@@ -60,13 +60,25 @@ if not exist "%INPUT_FILE%" (
     exit /b 1
 )
 
+:: Select the sheet size before replacing any existing output.
+set "PAPER_SIZE=%~2"
+if "%PAPER_SIZE%"=="" set "PAPER_SIZE=A3"
+if /I "%PAPER_SIZE%"=="A3" (
+    set "PAPER_OPTION=a3paper"
+) else if /I "%PAPER_SIZE%"=="A4" (
+    set "PAPER_OPTION=a4paper"
+) else (
+    echo Erreur: Le format des feuilles doit etre A3 ou A4
+    exit /b 1
+)
+
 :: Remove previous output because pdfbook2 cannot overwrite it.
 if exist "%INPUT_DIR%%INPUT_NAME%-book%INPUT_EXT%" (
     del /Q "%INPUT_DIR%%INPUT_NAME%-book%INPUT_EXT%"
 )
 
 :: Execute pdfbook2 command
-call .\.tools\bin\pdfbook2.cmd "%INPUT_FILE%" --no-crop --outer-margin=0  --inner-margin=0  --top-margin=0 --bottom-margin=0
+call .\.tools\bin\pdfbook2.cmd "%INPUT_FILE%" --paper=%PAPER_OPTION% --no-crop --outer-margin=0  --inner-margin=0  --top-margin=0 --bottom-margin=0
 if errorlevel 1 exit /b %ERRORLEVEL%
 
 :: Verify the output beside the source PDF.

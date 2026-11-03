@@ -9,7 +9,11 @@ from tkinter import messagebox
 
 DEFAULT_DIR = Path(__file__).resolve().parent
 SUMATRA_PDF = Path(r"C:\Program Files (x86)\SumatraPDF\SumatraPDF.exe")
-WINDOW_SIZE = "600x200"
+WINDOW_SIZE = "600x250"
+BOOKLET_PAPER = {
+    "A4": "A3",
+    "A5": "A4",
+}
 
 
 def load_properties(properties_file):
@@ -50,6 +54,7 @@ class PdfPrinterApp:
 
         self.script_dir = Path(__file__).resolve().parent
         self.selected_file = None
+        self.booklet_size = tk.StringVar(master=root, value="A4")
 
         self._build_ui()
 
@@ -78,6 +83,18 @@ class PdfPrinterApp:
             relief=tk.SUNKEN,
         )
         self.file_label.pack(fill=tk.X, pady=(18, 18))
+
+        format_frame = tk.Frame(main_frame)
+        format_frame.pack(fill=tk.X, pady=(0, 14))
+
+        tk.Label(format_frame, text="Format du livret :").pack(side=tk.LEFT)
+        for booklet_size, paper_size in BOOKLET_PAPER.items():
+            tk.Radiobutton(
+                format_frame,
+                text=f"{booklet_size} (feuilles {paper_size})",
+                variable=self.booklet_size,
+                value=booklet_size,
+            ).pack(side=tk.LEFT, padx=(10, 0))
 
         button_frame = tk.Frame(main_frame)
         button_frame.pack(fill=tk.X)
@@ -269,7 +286,10 @@ class PdfPrinterApp:
 
         # Run synchronously so the GUI waits for the final return code.
         return subprocess.run(
-            ["cmd.exe", "/d", "/c", "call", str(bat_path), str(self.selected_file)],
+            [
+                "cmd.exe", "/d", "/c", "call", str(bat_path),
+                str(self.selected_file), BOOKLET_PAPER[self.booklet_size.get()],
+            ],
             cwd=str(self.script_dir),
             env=env,
             capture_output=True,
@@ -298,7 +318,7 @@ class PdfPrinterApp:
                 "-print-to",
                 printer_name,
                 "-print-settings",
-                "paper=A3,duplexshort,color,fit,1x",
+                f"paper={BOOKLET_PAPER[self.booklet_size.get()]},duplexshort,color,fit,1x",
                 str(output_file),
             ],
             cwd=str(self.script_dir),

@@ -2,7 +2,7 @@
 
 Interface Windows de sélection de PDF, génération de livrets et impression avec SumatraPDF. Lancer `print-medium-pdf.cmd`.
 
-Le programme exclut les fichiers `-book.pdf` et les sources dont le livret existe déjà. L'impression utilise du papier A3 couleur, recto verso sur le bord court.
+Le programme exclut les fichiers `-book.pdf` et les sources dont le livret existe déjà. Le choix du format adapte le PDF et le papier d'impression : livret A4 sur feuilles A3 (par défaut), ou livret A5 sur feuilles A4. L'impression reste en couleur, recto verso sur le bord court.
 
 ## Installation
 
